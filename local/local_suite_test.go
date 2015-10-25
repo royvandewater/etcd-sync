@@ -1,4 +1,4 @@
-package etcdfs_test
+package local_test
 
 import (
 	. "github.com/onsi/ginkgo"
@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestEtcdfs(t *testing.T) {
+func TestLocal(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Etcdfs Suite")
+	RunSpecs(t, "Local Suite")
 }
