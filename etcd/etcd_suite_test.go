@@ -1,4 +1,4 @@
-package heirarchy_test
+package etcd_test
 
 import (
 	. "github.com/onsi/ginkgo"
@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestHeirarchy(t *testing.T) {
+func TestEtcd(t *testing.T) {
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Heirarchy Suite")
+	RunSpecs(t, "Etcd Suite")
 }

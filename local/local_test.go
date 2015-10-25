@@ -10,15 +10,24 @@ import (
 var _ = Describe("local", func() {
 	var err error
 
-	Describe("GenerateHeirarchy", func() {
+	Describe("FromPath", func() {
 		Context("When given a path that doesn't exist", func() {
-
 			BeforeEach(func() {
-				_, err = local.GenerateHeirarchy("not-extant")
+				_, err = local.FromPath("not-extant")
 			})
 
 			It("should return an error", func() {
 				Expect(err).NotTo(BeNil())
+			})
+		})
+
+		Context("When given a path that exists", func() {
+			BeforeEach(func() {
+				_, err = local.FromPath("extant")
+			})
+
+			It("should not return an error", func() {
+				Expect(err).To(BeNil())
 			})
 		})
 	})
