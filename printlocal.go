@@ -15,7 +15,7 @@ func PrintLocal(context *cli.Context) {
 		ExitWithHelp(fmt.Sprintf("Could not find directory: %v", localPath))
 	}
 
-	_, err := local.GenerateHeirarchy(localPath)
+	_, err := local.FromPath(localPath)
 	PanicIfError("local.GenerateHierarchy", err)
 }
 

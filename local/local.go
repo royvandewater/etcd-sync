@@ -1,17 +1,23 @@
 package local
 
-import (
-	"errors"
-
-	"github.com/royvandewater/etcdsync/etcd"
-)
-
-// FromPath generates a Local from the local etcd filesystem
-func FromPath(path string, dependencies ...interface{}) (*etcd.Etcd, error) {
-	fs := getDependencies(dependencies)
-	return nil, errors.New("uh oh")
+// Local implements etcd and represents the data on the file system
+type Local struct {
+	FileSystem FileSystem
+	Path       string
 }
 
-func getDependencies(dependencies ...interface{}) FileSystem {
-	return nil
+// New creates a Local from the local etcd filesystem
+func New(path string, dependencies *Dependencies) *Local {
+	// _, err := fs.ReadDir(path)
+	// if err != nil {
+	// 	return nil, err
+	// }
+	fs := dependencies.GetFileSystem()
+	return &Local{FileSystem: fs, Path: path}
+}
+
+// Services returns a list of etcd services
+func (local *Local) Services() (int, error) {
+	_, err := local.FileSystem.ReadDir(local.Path)
+	return 0, err
 }
