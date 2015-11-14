@@ -14,7 +14,9 @@ type FileSystem interface {
 type File interface{}
 
 // FileInfo describes a file
-type FileInfo interface{}
+type FileInfo interface {
+	Name() string
+}
 
 // OSFileSystem implements FileSystem using golang os
 type OSFileSystem struct{}

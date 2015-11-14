@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"os"
 
 	"github.com/codegangsta/cli"
@@ -15,8 +16,14 @@ func PrintLocal(context *cli.Context) {
 		ExitWithHelp(fmt.Sprintf("Could not find directory: %v", localPath))
 	}
 
-	_, err := local.FromPath(localPath)
-	PanicIfError("local.GenerateHierarchy", err)
+	localEtcd := local.New(localPath, nil)
+	log.Printf("path: %v", localEtcd.Path)
+	services, err := localEtcd.Services()
+	PanicIfError("localEtcd.Services", err)
+
+	for _, service := range services {
+		log.Printf("service: %v", service)
+	}
 }
 
 func pathIsDir(path string) bool {
