@@ -33,7 +33,12 @@ func (osFileSystem *OSFileSystem) ReadDir(dirname string) ([]FileInfo, error) {
 		return nil, err
 	}
 
-	return make([]FileInfo, len(fileInfos)), nil
+	osFileInfos := make([]FileInfo, len(fileInfos))
+	for i, fileInfo := range fileInfos {
+		osFileInfos[i] = fileInfo
+	}
+
+	return osFileInfos, nil
 }
 
 // Stat returns the FileInfo structure describing file.

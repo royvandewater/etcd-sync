@@ -22,7 +22,7 @@ func PrintLocal(context *cli.Context) {
 	PanicIfError("localEtcd.Services", err)
 
 	for _, service := range services {
-		log.Printf("service: %v", service)
+		log.Printf("service: %v", service.Path())
 	}
 }
 
