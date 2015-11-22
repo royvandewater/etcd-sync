@@ -1,6 +1,8 @@
 package local_test
 
 import (
+	"errors"
+
 	"github.com/royvandewater/etcdsync/local"
 
 	. "github.com/onsi/ginkgo"
@@ -49,9 +51,41 @@ var _ = Describe("Service", func() {
 			})
 
 			It("should have Records", func() {
+				Expect(sut.Records()).To(HaveLen(2))
+			})
+		})
+
+		Context("When the service file is malformed", func() {
+			BeforeEach(func() {
+				mockFS.ReadFileValue = []byte("is this even right?")
+			})
+
+			It("should have an err", func() {
+				_, err := sut.Records()
+				Expect(err).To(MatchError(errors.New("Malformed line 0: 'is this even right?'")))
+			})
+		})
+
+		Context("When the service file contains a blank newline", func() {
+			BeforeEach(func() {
+				mockFS.ReadFileValue = []byte("key value\n")
+			})
+
+			It("should be ignored", func() {
+				Expect(sut.Records()).To(HaveLen(1))
+			})
+		})
+
+		Context("When the service file contains a value with a quoted space", func() {
+			BeforeEach(func() {
+				mockFS.ReadFileValue = []byte("key \"val ue\"\n")
+			})
+
+			It("should return the quoted value", func() {
 				records, err := sut.Records()
 				Expect(err).To(BeNil())
-				Expect(records).To(HaveLen(2))
+				Expect(sut.Records()).To(HaveLen(1))
+				Expect(records["key"]).To(Equal("\"val ue\""))
 			})
 		})
 	})

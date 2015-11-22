@@ -1,7 +1,10 @@
 package local
 
 import (
+	"errors"
+	"fmt"
 	"path"
+	"regexp"
 	"strings"
 )
 
@@ -42,7 +45,16 @@ func (service *localService) Records() (map[string]string, error) {
 	lines := strings.Split(contents, "\n")
 
 	records := make(map[string]string, len(lines))
-	for _, line := range lines {
+	for i, line := range lines {
+		if service.skipLine(line) {
+			continue
+		}
+
+		if !service.isValidLine(line) {
+			message := fmt.Sprintf("Malformed line %v: '%v'", i, line)
+			return nil, errors.New(message)
+		}
+
 		key, value := service.parseLine(line)
 		records[key] = value
 	}
@@ -58,7 +70,19 @@ func (service *localService) fileContents() (string, error) {
 	return string(contents), nil
 }
 
-func (service *localService) parseLine(line string) (key, value string) {
+func (service *localService) isValidLine(line string) bool {
+	expression := regexp.MustCompile("\".*?\"")
+	line = expression.ReplaceAllString(line, "x")
+
 	parts := strings.Split(line, " ")
+	return len(parts) == 2
+}
+
+func (service *localService) parseLine(line string) (key, value string) {
+	parts := strings.SplitN(line, " ", 2)
 	return parts[0], parts[1]
+}
+
+func (service *localService) skipLine(line string) bool {
+	return len(line) == 0
 }

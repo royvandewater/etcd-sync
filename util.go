@@ -17,5 +17,5 @@ func PanicIfError(msg string, err error) {
 		return
 	}
 
-	log.Panicf("ERROR(%v): %v", msg, err)
+	log.Panicf("ERROR(%v):\n\n%v", msg, err)
 }
