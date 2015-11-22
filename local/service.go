@@ -14,15 +14,15 @@ type Service interface {
 }
 
 type localService struct {
-	dirname    string
-	basename   string
-	filesystem FileSystem
+	dirname  string
+	basename string
+	fs       FileSystem
 }
 
 // NewService generates a new Service instance
 func NewService(dirname, basename string, dependencies *Dependencies) Service {
-	filesystem := dependencies.GetFS()
-	return &localService{dirname: dirname, basename: basename, filesystem: filesystem}
+	fs := dependencies.GetFS()
+	return &localService{dirname: dirname, basename: basename, fs: fs}
 }
 
 func (service *localService) Name() string {
@@ -50,7 +50,7 @@ func (service *localService) Records() (map[string]string, error) {
 }
 
 func (service *localService) fileContents() (string, error) {
-	contents, err := service.filesystem.ReadFile(service.Path())
+	contents, err := service.fs.ReadFile(service.Path())
 	if err != nil {
 		return "", err
 	}

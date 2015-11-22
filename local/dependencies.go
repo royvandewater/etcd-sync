@@ -10,7 +10,7 @@ func NewDependencies(fs FileSystem) *Dependencies {
 	return &Dependencies{fs: fs}
 }
 
-// GetFS returns the injected filesystem
+// GetFS returns the injected fileSystem
 // or generates a default implementation using os
 func (dependencies *Dependencies) GetFS() FileSystem {
 	if dependencies != nil && dependencies.fs != nil {
