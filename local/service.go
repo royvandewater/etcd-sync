@@ -21,7 +21,7 @@ type localService struct {
 
 // NewService generates a new Service instance
 func NewService(dirname, basename string, dependencies *Dependencies) Service {
-	filesystem := dependencies.GetFileSystem()
+	filesystem := dependencies.GetFS()
 	return &localService{dirname: dirname, basename: basename, filesystem: filesystem}
 }
 

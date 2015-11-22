@@ -2,14 +2,19 @@ package local
 
 // Dependencies define what can be injected into Local
 type Dependencies struct {
-	FileSystem FileSystem
+	fs FileSystem
 }
 
-// GetFileSystem returns the injected filesystem
+// NewDependencies constructs a new dependencies instance
+func NewDependencies(fs FileSystem) *Dependencies {
+	return &Dependencies{fs: fs}
+}
+
+// GetFS returns the injected filesystem
 // or generates a default implementation using os
-func (dependencies *Dependencies) GetFileSystem() FileSystem {
-	if dependencies != nil && dependencies.FileSystem != nil {
-		return dependencies.FileSystem
+func (dependencies *Dependencies) GetFS() FileSystem {
+	if dependencies != nil && dependencies.fs != nil {
+		return dependencies.fs
 	}
 
 	return &OSFileSystem{}

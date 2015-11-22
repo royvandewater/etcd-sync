@@ -8,7 +8,7 @@ type Local struct {
 
 // New creates a Local from the local etcd filesystem
 func New(path string, dependencies *Dependencies) *Local {
-	fs := dependencies.GetFileSystem()
+	fs := dependencies.GetFS()
 	return &Local{fileSystem: fs, Path: path}
 }
 

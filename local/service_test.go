@@ -14,7 +14,7 @@ var _ = Describe("Service", func() {
 
 	BeforeEach(func() {
 		mockFS = &MockFS{}
-		dependencies = &local.Dependencies{FileSystem: mockFS}
+		dependencies = local.NewDependencies(mockFS)
 		sut = local.NewService("/path/to/", "file.service", dependencies)
 	})
 

@@ -17,7 +17,7 @@ var _ = Describe("local", func() {
 
 	BeforeEach(func() {
 		mockFS = &MockFS{}
-		dependencies = &local.Dependencies{FileSystem: mockFS}
+		dependencies = local.NewDependencies(mockFS)
 	})
 
 	Describe("New", func() {
