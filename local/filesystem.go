@@ -8,6 +8,7 @@ import (
 // FileSystem defines how to access the file system
 type FileSystem interface {
 	ReadDir(dirname string) ([]FileInfo, error)
+	ReadFile(filename string) ([]byte, error)
 }
 
 // File defines how to access a file
@@ -27,7 +28,7 @@ func (OSFileSystem) Open(name string) (File, error) {
 }
 
 // ReadDir reads the directory named by dirname and returns a list of sorted directory entries.
-func (osFileSystem *OSFileSystem) ReadDir(dirname string) ([]FileInfo, error) {
+func (fileSystem *OSFileSystem) ReadDir(dirname string) ([]FileInfo, error) {
 	fileInfos, err := ioutil.ReadDir(dirname)
 	if err != nil {
 		return nil, err
@@ -39,6 +40,11 @@ func (osFileSystem *OSFileSystem) ReadDir(dirname string) ([]FileInfo, error) {
 	}
 
 	return osFileInfos, nil
+}
+
+// ReadFile reads the file named by filename and returns the contents.
+func (fileSystem *OSFileSystem) ReadFile(filename string) ([]byte, error) {
+	return ioutil.ReadFile(filename)
 }
 
 // Stat returns the FileInfo structure describing file.

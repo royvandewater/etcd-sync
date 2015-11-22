@@ -9,23 +9,6 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-type MockFS struct {
-	ReadDirValue []local.FileInfo
-	ReadDirError error
-}
-
-func (mockFS *MockFS) ReadDir(dirname string) ([]local.FileInfo, error) {
-	return mockFS.ReadDirValue, mockFS.ReadDirError
-}
-
-type MockFileInfo struct {
-	NameValue string
-}
-
-func (fileInfo *MockFileInfo) Name() string {
-	return fileInfo.NameValue
-}
-
 var _ = Describe("local", func() {
 	var sut *local.Local
 	var dependencies *local.Dependencies
@@ -48,10 +31,6 @@ var _ = Describe("local", func() {
 
 		It("should set the path", func() {
 			Expect(sut.Path).To(Equal("the-path"))
-		})
-
-		It("should set FileSystem", func() {
-			Expect(sut.FileSystem).To(Equal(mockFS))
 		})
 	})
 

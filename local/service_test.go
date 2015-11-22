@@ -8,15 +8,51 @@ import (
 )
 
 var _ = Describe("Service", func() {
-	Describe("Path", func() {
-		var sut local.Service
+	var dependencies *local.Dependencies
+	var mockFS *MockFS
+	var sut local.Service
 
-		BeforeEach(func() {
-			sut = local.NewService("/path/to/", "file")
+	BeforeEach(func() {
+		mockFS = &MockFS{}
+		dependencies = &local.Dependencies{FileSystem: mockFS}
+		sut = local.NewService("/path/to/", "file.service", dependencies)
+	})
+
+	Describe("Name", func() {
+		It("should have a Name", func() {
+			Expect(sut.Name()).To(Equal("file.service"))
+		})
+	})
+
+	Describe("Path", func() {
+		It("should have a Path", func() {
+			Expect(sut.Path()).To(Equal("/path/to/file.service"))
+		})
+	})
+
+	Describe("Records", func() {
+		Context("When the service file has one line", func() {
+			BeforeEach(func() {
+				mockFS.ReadFileValue = []byte("key value")
+			})
+
+			It("should have Records", func() {
+				records, err := sut.Records()
+				Expect(err).To(BeNil())
+				Expect(records).To(HaveLen(1))
+			})
 		})
 
-		It("should have a Path", func() {
-			Expect(sut.Path()).To(Equal("/path/to/file"))
+		Context("When the service file has two lines", func() {
+			BeforeEach(func() {
+				mockFS.ReadFileValue = []byte("key1 value1\nkey2 value2")
+			})
+
+			It("should have Records", func() {
+				records, err := sut.Records()
+				Expect(err).To(BeNil())
+				Expect(records).To(HaveLen(2))
+			})
 		})
 	})
 })
