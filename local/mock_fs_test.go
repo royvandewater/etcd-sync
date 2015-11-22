@@ -1,15 +1,18 @@
 package local_test
 
-import "github.com/royvandewater/etcdsync/local"
+import (
+	"os"
+	"time"
+)
 
 type MockFS struct {
-	ReadDirValue []local.FileInfo
+	ReadDirValue []os.FileInfo
 	ReadDirError error
 
 	ReadFileValue []byte
 }
 
-func (mockFS *MockFS) ReadDir(dirname string) ([]local.FileInfo, error) {
+func (mockFS *MockFS) ReadDir(dirname string) ([]os.FileInfo, error) {
 	return mockFS.ReadDirValue, mockFS.ReadDirError
 }
 
@@ -23,4 +26,24 @@ type MockFileInfo struct {
 
 func (fileInfo *MockFileInfo) Name() string {
 	return fileInfo.NameValue
+}
+
+func (fileInfo *MockFileInfo) Size() int64 {
+	return 0
+}
+
+func (fileInfo *MockFileInfo) Mode() os.FileMode {
+	return 0777
+}
+
+func (fileInfo *MockFileInfo) ModTime() time.Time {
+	return time.Now()
+}
+
+func (fileInfo *MockFileInfo) IsDir() bool {
+	return false
+}
+
+func (fileInfo *MockFileInfo) Sys() interface{} {
+	return nil
 }

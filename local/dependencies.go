@@ -17,5 +17,5 @@ func (dependencies *Dependencies) GetFS() FileSystem {
 		return dependencies.fs
 	}
 
-	return &OSFileSystem{}
+	return NewFileSystem()
 }

@@ -2,6 +2,7 @@ package local_test
 
 import (
 	"errors"
+	"os"
 
 	"github.com/royvandewater/etcdsync/local"
 
@@ -55,7 +56,7 @@ var _ = Describe("local", func() {
 
 			BeforeEach(func() {
 				fileInfo := &MockFileInfo{NameValue: "the-file"}
-				mockFS.ReadDirValue = []local.FileInfo{fileInfo}
+				mockFS.ReadDirValue = []os.FileInfo{fileInfo}
 				result, err = sut.Services()
 			})
 
