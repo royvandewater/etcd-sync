@@ -37,6 +37,12 @@ func main() {
 			Usage:   "print etcd key/values from local fs",
 			Action:  PrintLocal,
 		},
+		{
+			Name:    "printremote",
+			Aliases: []string{"pl"},
+			Usage:   "print etcd key/values from remote etcd",
+			Action:  PrintRemote,
+		},
 	}
 	app.Run(os.Args)
 }
