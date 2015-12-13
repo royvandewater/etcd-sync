@@ -1,6 +1,8 @@
 package remote_test
 
 import (
+	"errors"
+
 	"github.com/royvandewater/etcdsync/remote"
 
 	. "github.com/onsi/ginkgo"
@@ -9,30 +11,46 @@ import (
 
 var _ = Describe("remote", func() {
 	var sut *remote.Remote
+	var dependencies *remote.Dependencies
 	var err error
 
 	Describe("New", func() {
 		BeforeEach(func() {
-			sut = remote.New("the-uri")
+			dependencies = &remote.Dependencies{}
+			sut = remote.New("the-uri", "octets", dependencies)
 		})
 
 		It("should generate a new remote instance", func() {
 			Expect(sut).NotTo(BeNil())
 		})
 
-		It("should set the Uri", func() {
-			Expect(sut.URI).To(Equal("the-uri"))
+		It("should set the URI", func() {
+			Expect(sut.URI()).To(Equal("the-uri"))
+		})
+
+		It("should set the Namespace", func() {
+			Expect(sut.Namespace()).To(Equal("octets"))
 		})
 	})
 
 	Describe("Services", func() {
+		var result []remote.Service
+		var etcd *MockEtcd
+
 		BeforeEach(func() {
-			sut = remote.New("the-uri")
+			etcd = &MockEtcd{}
+			dependencies = remote.NewDependencies(etcd)
+			sut = remote.New("the-uri", "octets", dependencies)
 		})
 
-		Context("When the server does not respond", func() {
+		Context("When the server is not reachable", func() {
 			BeforeEach(func() {
-				_, err = sut.Services()
+				etcd.ListError = errors.New("Server not reachable")
+				result, err = sut.Services()
+			})
+
+			It("should return no result", func() {
+				Expect(result).To(BeNil())
 			})
 
 			It("should return an error", func() {
@@ -41,14 +59,17 @@ var _ = Describe("remote", func() {
 		})
 
 		Context("When the server responds with one directory", func() {
-			// var result []remote.Service
-
 			BeforeEach(func() {
-				// result, err = sut.Services()
+				etcd.ListValue = []string{"some-directory"}
+				result, err = sut.Services()
+			})
+
+			It("should return a result", func() {
+				Expect(result).NotTo(BeNil())
 			})
 
 			It("should return no error", func() {
-				// Expect(err).To(BeNil())
+				Expect(err).To(BeNil())
 			})
 		})
 	})

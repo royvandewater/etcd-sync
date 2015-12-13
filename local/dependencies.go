@@ -7,7 +7,7 @@ type Dependencies struct {
 
 // NewDependencies constructs a new dependencies instance
 func NewDependencies(fs FileSystem) *Dependencies {
-	return &Dependencies{fs: fs}
+	return &Dependencies{fs}
 }
 
 // GetFS returns the injected fileSystem
