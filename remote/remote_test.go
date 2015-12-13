@@ -39,5 +39,17 @@ var _ = Describe("remote", func() {
 				Expect(err).NotTo(BeNil())
 			})
 		})
+
+		Context("When the server responds with one directory", func() {
+			// var result []remote.Service
+
+			BeforeEach(func() {
+				// result, err = sut.Services()
+			})
+
+			It("should return no error", func() {
+				// Expect(err).To(BeNil())
+			})
+		})
 	})
 })

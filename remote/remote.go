@@ -13,6 +13,6 @@ func New(uri string) *Remote {
 }
 
 // Services returns a list of etcd services
-func (remote *Remote) Services() (*int, error) {
+func (remote *Remote) Services() ([]Service, error) {
 	return nil, errors.New("oops")
 }
