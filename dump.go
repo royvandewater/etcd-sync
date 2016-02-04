@@ -29,7 +29,7 @@ func Dump(context *cli.Context) {
 
 		key := path.Join(localPath, keyValue.Key)
 		value := fmt.Sprintln(keyValue.Value)
-		err = ioutil.WriteFile(key, []byte(value), 0755)
+		err = ioutil.WriteFile(key, []byte(value), 0644)
 		PanicIfError(fmt.Sprintf("failed to write key '%s'", key), err)
 	}
 
