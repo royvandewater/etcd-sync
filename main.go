@@ -26,12 +26,6 @@ func main() {
 	}
 	app.Commands = []cli.Command{
 		{
-			Name:    "diff",
-			Aliases: []string{"d"},
-			Usage:   "show differences between local fs & remote etcd",
-			Action:  Diff,
-		},
-		{
 			Name:    "printlocal",
 			Aliases: []string{"pl"},
 			Usage:   "print etcd key/values from local fs",
@@ -42,6 +36,20 @@ func main() {
 			Aliases: []string{"pr"},
 			Usage:   "print etcd key/values from remote etcd",
 			Action:  PrintRemote,
+		},
+		{
+			Name:    "dump",
+			Aliases: []string{"d"},
+			Usage:   "dump remote etcd pairs into the local filesystem",
+			Action:  Dump,
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:   "remote-directory, r",
+					Value:  "/",
+					Usage:  "etcd directory to dump to local fs. Directory is still included in path of dumped files",
+					EnvVar: "ETCDSYNC_REMOTE_DIRECTORY",
+				},
+			},
 		},
 	}
 	app.Run(os.Args)
