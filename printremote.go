@@ -2,34 +2,22 @@ package main
 
 import (
 	"fmt"
-	"log"
 
 	"github.com/codegangsta/cli"
-	"github.com/octoblu/go-simple-etcd-client/etcdclient"
+	"github.com/royvandewater/etcdsync/remote"
 )
 
 // PrintRemote print etcd key/values from remote etcd
 func PrintRemote(context *cli.Context) {
 	etcdURI := context.GlobalString("etcd-uri")
 
-	etcd, err := etcdclient.Dial(etcdURI)
-	if err != nil {
-		log.Panicln("etcdclient.Dial failed", err.Error())
-	}
+	remoteEtcd, err := remote.Dial(etcdURI)
+	PanicIfError("remote.Dial", err)
 
-	keys, err := etcd.LsRecursive("/")
-	if err != nil {
-		log.Panicln("etcd.LsRecursive failed", err.Error())
-	}
+	keyValues, err := remoteEtcd.KeyValuePairs("/octoblu")
+	PanicIfError("remoteEtcd.KeyValuePairs", err)
 
-	for _, key := range keys {
-		value, err := etcd.Get(key)
-		if err != nil {
-			log.Panicln("etcd.Get(key)", err.Error())
-		}
-		if value == "" {
-			continue
-		}
-		fmt.Printf("%v\t%v\n", key, value)
+	for _, keyValue := range keyValues {
+		fmt.Println(keyValue)
 	}
 }

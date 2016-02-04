@@ -1,40 +1,41 @@
 package remote
 
+import (
+	"github.com/octoblu/go-simple-etcd-client/etcdclient"
+	"github.com/royvandewater/etcdsync/keyvalue"
+)
+
 // Remote implements etcd and represents the data in a remote etcd server
 type Remote struct {
-	etcd      Etcd
-	namespace string
-	uri       string
+	etcd etcdclient.EtcdClient
 }
 
-// New creates a Remote from the remote etcd server.
-// The uri parameter is ignored if an Etcd instance is
-// injected in through the dependencies
-func New(uri, namespace string, deps *Dependencies) *Remote {
-	etcd := deps.GetEtcd(uri)
-	return &Remote{etcd, namespace, uri}
+// Dial creates a Remote from the remote etcd server.
+func Dial(etcdURI string) (*Remote, error) {
+	etcd, err := etcdclient.Dial(etcdURI)
+	return &Remote{etcd}, err
 }
 
-// Namespace returns the etcd directory namespace
-// this Remote was constructed with
-func (remote *Remote) Namespace() string {
-	return remote.namespace
-}
+// KeyValuePairs returns a list key value pairs
+// recursively under the directory
+func (remote *Remote) KeyValuePairs(directory string) ([]keyvalue.KeyValue, error) {
+	var keyValues []keyvalue.KeyValue
+	etcd := remote.etcd
 
-// URI returns the etcd service uri this Remote was
-// constructed with
-func (remote *Remote) URI() string {
-	return remote.uri
-}
-
-// Services returns a list of etcd services
-func (remote *Remote) Services() ([]Service, error) {
-	_, err := remote.etcd.List(remote.namespace)
+	keys, err := etcd.LsRecursive(directory)
 	if err != nil {
-		return nil, err
+		return keyValues, err
 	}
 
-	services := []Service{}
-
-	return services, nil
+	for _, key := range keys {
+		value, err := etcd.Get(key)
+		if err != nil {
+			return make([]keyvalue.KeyValue, 0), err
+		}
+		if value == "" {
+			continue
+		}
+		keyValues = append(keyValues, keyvalue.KeyValue{key, value})
+	}
+	return keyValues, nil
 }

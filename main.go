@@ -39,7 +39,7 @@ func main() {
 		},
 		{
 			Name:    "printremote",
-			Aliases: []string{"pl"},
+			Aliases: []string{"pr"},
 			Usage:   "print etcd key/values from remote etcd",
 			Action:  PrintRemote,
 		},
