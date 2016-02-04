@@ -10,15 +10,15 @@ import (
 
 // Dump dumps remote etcd pairs into the local filesystem
 func Dump(context *cli.Context) {
+	namespace := context.GlobalString("namespace")
 	localPath := context.GlobalString("local-path")
 	etcdURI := context.GlobalString("etcd-uri")
-	namespace := context.String("namespace")
 
-	client, err := etcd.Dial(etcdURI)
+	etcdClient, err := etcd.Dial(etcdURI)
 	PanicIfError("etcd.Dial", err)
 
-	keyValues, err := client.KeyValuePairs(namespace)
-	PanicIfError("client.KeyValuePairs", err)
+	keyValues, err := etcdClient.KeyValuePairs(namespace)
+	PanicIfError("etcdClient.KeyValuePairs", err)
 
 	localEtcdFS := fs.New(localPath)
 	err = localEtcdFS.SetAll(keyValues)

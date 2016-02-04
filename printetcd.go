@@ -12,11 +12,11 @@ func PrintEtcd(context *cli.Context) {
 	namespace := context.GlobalString("namespace")
 	etcdURI := context.GlobalString("etcd-uri")
 
-	client, err := etcd.Dial(etcdURI)
+	etcdClient, err := etcd.Dial(etcdURI)
 	PanicIfError("etcd.Dial", err)
 
-	keyValues, err := client.KeyValuePairs(namespace)
-	PanicIfError("client.KeyValuePairs", err)
+	keyValues, err := etcdClient.KeyValuePairs(namespace)
+	PanicIfError("etcdClient.KeyValuePairs", err)
 
 	for _, keyValue := range keyValues {
 		fmt.Println(keyValue)
