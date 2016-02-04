@@ -23,33 +23,32 @@ func main() {
 			Usage:  "path where etcd file values are stored",
 			EnvVar: "ETCDSYNC_LOCAL_PATH",
 		},
+		cli.StringFlag{
+			Name:   "namespace, n",
+			Value:  "/",
+			Usage:  "the etcd namespace",
+			EnvVar: "ETCDSYNC_NAMESPACE",
+		},
 	}
 	app.Commands = []cli.Command{
 		{
-			Name:    "printlocal",
-			Aliases: []string{"pl"},
+			Name:    "printfs",
+			Aliases: []string{"pf"},
 			Usage:   "print etcd key/values from local fs",
-			Action:  PrintLocal,
+			Action:  PrintFS,
 		},
 		{
-			Name:    "printremote",
-			Aliases: []string{"pr"},
+			Name:    "printetcd",
+			Aliases: []string{"pe"},
 			Usage:   "print etcd key/values from remote etcd",
-			Action:  PrintRemote,
+			Action:  PrintEtcd,
+			Flags:   []cli.Flag{},
 		},
 		{
 			Name:    "dump",
 			Aliases: []string{"d"},
 			Usage:   "dump remote etcd pairs into the local filesystem",
 			Action:  Dump,
-			Flags: []cli.Flag{
-				cli.StringFlag{
-					Name:   "remote-directory, r",
-					Value:  "/",
-					Usage:  "etcd directory to dump to local fs. Directory is still included in path of dumped files",
-					EnvVar: "ETCDSYNC_REMOTE_DIRECTORY",
-				},
-			},
 		},
 	}
 	app.Run(os.Args)

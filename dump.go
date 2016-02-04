@@ -7,20 +7,20 @@ import (
 	"path"
 
 	"github.com/codegangsta/cli"
-	"github.com/royvandewater/etcdsync/remote"
+	"github.com/royvandewater/etcdsync/etcd"
 )
 
 // Dump dumps remote etcd pairs into the local filesystem
 func Dump(context *cli.Context) {
 	localPath := context.GlobalString("local-path")
 	etcdURI := context.GlobalString("etcd-uri")
-	remoteDirectory := context.String("remote-directory")
+	namespace := context.String("namespace")
 
-	remoteEtcd, err := remote.Dial(etcdURI)
-	PanicIfError("remote.Dial", err)
+	client, err := etcd.Dial(etcdURI)
+	PanicIfError("etcd.Dial", err)
 
-	keyValues, err := remoteEtcd.KeyValuePairs(remoteDirectory)
-	PanicIfError("remote.KeyValuePairs", err)
+	keyValues, err := client.KeyValuePairs(namespace)
+	PanicIfError("client.KeyValuePairs", err)
 
 	for _, keyValue := range keyValues {
 		dir := path.Join(localPath, path.Dir(keyValue.Key))
