@@ -13,7 +13,7 @@ func main() {
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:   "etcd-uri, e",
-			Value:  "localhost:2379",
+                        Value:  "http://localhost:2379",
 			Usage:  "uri where etcd can be found",
 			EnvVar: "ETCDSYNC_ETCD_URI",
 		},
