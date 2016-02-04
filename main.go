@@ -13,7 +13,7 @@ func main() {
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:   "etcd-uri, e",
-                        Value:  "http://localhost:2379",
+			Value:  "http://localhost:2379",
 			Usage:  "uri where etcd can be found",
 			EnvVar: "ETCDSYNC_ETCD_URI",
 		},
@@ -49,6 +49,12 @@ func main() {
 			Aliases: []string{"d"},
 			Usage:   "dump remote etcd pairs into the local filesystem",
 			Action:  Dump,
+		},
+		{
+			Name:    "load",
+			Aliases: []string{"l"},
+			Usage:   "load local fs etcd pairs into remote etcd",
+			Action:  Load,
 		},
 	}
 	app.Run(os.Args)

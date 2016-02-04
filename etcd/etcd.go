@@ -35,7 +35,19 @@ func (etcd *Etcd) KeyValuePairs(namespace string) ([]keyvalue.KeyValue, error) {
 		if value == "" {
 			continue
 		}
-		keyValues = append(keyValues, keyvalue.KeyValue{key, value})
+		keyValues = append(keyValues, keyvalue.KeyValue{Key: key, Value: value})
 	}
 	return keyValues, nil
+}
+
+// SetAll sets all keyValues on the remote Etcd
+func (etcd *Etcd) SetAll(keyValues []keyvalue.KeyValue) error {
+	for _, keyValue := range keyValues {
+
+		err := etcd.client.Set(keyValue.Key, keyValue.Value)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
