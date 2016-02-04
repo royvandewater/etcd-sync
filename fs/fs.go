@@ -9,7 +9,10 @@ import (
 	"strings"
 
 	"github.com/royvandewater/etcdsync/keyvalue"
+	De "github.com/tj/go-debug"
 )
+
+var debug = De.Debug("etcdsync:fs")
 
 // FS and represents the data on the file system
 type FS struct {
@@ -61,18 +64,25 @@ func (fs *FS) KeyValuePairs(namespace string) ([]keyvalue.KeyValue, error) {
 // SetAll sets all keyValues on the local fs
 func (fs *FS) SetAll(keyValues []keyvalue.KeyValue) error {
 	for _, keyValue := range keyValues {
-		dir := path.Join(fs.path, path.Dir(keyValue.Key))
-		err := os.MkdirAll(dir, 0755)
-		if err != nil {
-			return err
-		}
-
-		key := path.Join(fs.path, keyValue.Key)
-		value := fmt.Sprintln(keyValue.Value)
-		err = ioutil.WriteFile(key, []byte(value), 0644)
+		err := fs.Set(keyValue)
 		if err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+// Set sets the keyValue on the local fs
+func (fs *FS) Set(keyValue keyvalue.KeyValue) error {
+	debug("Set: %v", keyValue)
+	dir := path.Join(fs.path, path.Dir(keyValue.Key))
+	err := os.MkdirAll(dir, 0755)
+	if err != nil {
+		return err
+	}
+
+	key := path.Join(fs.path, keyValue.Key)
+	value := fmt.Sprintln(keyValue.Value)
+	err = ioutil.WriteFile(key, []byte(value), 0644)
+	return err
 }

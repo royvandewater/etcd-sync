@@ -3,7 +3,10 @@ package etcd
 import (
 	"github.com/octoblu/go-simple-etcd-client/etcdclient"
 	"github.com/royvandewater/etcdsync/keyvalue"
+	De "github.com/tj/go-debug"
 )
+
+var debug = De.Debug("etcdsync:etcd")
 
 // Etcd and represents the data in a remote etcd server
 type Etcd struct {
@@ -43,11 +46,17 @@ func (etcd *Etcd) KeyValuePairs(namespace string) ([]keyvalue.KeyValue, error) {
 // SetAll sets all keyValues on the remote Etcd
 func (etcd *Etcd) SetAll(keyValues []keyvalue.KeyValue) error {
 	for _, keyValue := range keyValues {
-
-		err := etcd.client.Set(keyValue.Key, keyValue.Value)
+		err := etcd.Set(keyValue)
 		if err != nil {
 			return err
 		}
 	}
 	return nil
+}
+
+// Set sets the keyValue on the remote Etcd
+func (etcd *Etcd) Set(keyValue keyvalue.KeyValue) error {
+	debug("Set: %v", keyValue)
+	err := etcd.client.Set(keyValue.Key, keyValue.Value)
+	return err
 }
