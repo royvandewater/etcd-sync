@@ -9,7 +9,7 @@ import (
 func main() {
 	app := cli.NewApp()
 	app.Name = "etcdsync"
-	app.Version = "1.0.0"
+	app.Version = VERSION
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
 			Name:   "etcd-uri, e",
@@ -32,19 +32,6 @@ func main() {
 	}
 	app.Commands = []cli.Command{
 		{
-			Name:    "printfs",
-			Aliases: []string{"pf"},
-			Usage:   "print etcd key/values from local fs",
-			Action:  PrintFS,
-		},
-		{
-			Name:    "printetcd",
-			Aliases: []string{"pe"},
-			Usage:   "print etcd key/values from remote etcd",
-			Action:  PrintEtcd,
-			Flags:   []cli.Flag{},
-		},
-		{
 			Name:    "dump",
 			Aliases: []string{"d"},
 			Usage:   "dump remote etcd pairs into the local filesystem",
@@ -55,6 +42,31 @@ func main() {
 			Aliases: []string{"l"},
 			Usage:   "load local fs etcd pairs into remote etcd",
 			Action:  Load,
+		},
+		{
+			Name:    "printfs",
+			Aliases: []string{"pf"},
+			Usage:   "print etcd key/values from local fs",
+			Flags: []cli.Flag{
+				cli.BoolFlag{
+					Name:   "table, t",
+					Usage:  "Show using a pretty ascii table",
+					EnvVar: "ETCDSYNC_TABLE",
+				},
+			},
+		},
+		{
+			Name:    "printetcd",
+			Aliases: []string{"pe"},
+			Usage:   "print etcd key/values from remote etcd",
+			Action:  PrintEtcd,
+			Flags: []cli.Flag{
+				cli.BoolFlag{
+					Name:   "table, t",
+					Usage:  "Show using a pretty ascii table",
+					EnvVar: "ETCDSYNC_TABLE",
+				},
+			},
 		},
 	}
 	app.Run(os.Args)

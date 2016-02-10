@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/codegangsta/cli"
 	"github.com/royvandewater/etcdsync/etcd"
 )
@@ -11,6 +9,7 @@ import (
 func PrintEtcd(context *cli.Context) {
 	namespace := context.GlobalString("namespace")
 	etcdURI := context.GlobalString("etcd-uri")
+	useTable := context.Bool("table")
 
 	etcdClient, err := etcd.Dial(etcdURI)
 	PanicIfError("etcd.Dial", err)
@@ -18,7 +17,5 @@ func PrintEtcd(context *cli.Context) {
 	keyValues, err := etcdClient.KeyValuePairs(namespace)
 	PanicIfError("etcdClient.KeyValuePairs", err)
 
-	for _, keyValue := range keyValues {
-		fmt.Println(keyValue)
-	}
+	printKeyValuePairs(useTable, keyValues)
 }

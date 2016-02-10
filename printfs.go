@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 
 	"github.com/codegangsta/cli"
@@ -12,14 +11,13 @@ import (
 func PrintFS(context *cli.Context) {
 	namespace := context.GlobalString("namespace")
 	localPath := context.GlobalString("local-path")
+	useTable := context.Bool("table")
 	localEtcdFS := fs.New(localPath)
 
 	keyValues, err := localEtcdFS.KeyValuePairs(namespace)
 	PanicIfError("localEtcdFS.KeyValuePairs", err)
 
-	for _, keyValue := range keyValues {
-		fmt.Println(keyValue)
-	}
+	printKeyValuePairs(useTable, keyValues)
 }
 
 func pathIsDir(path string) bool {
