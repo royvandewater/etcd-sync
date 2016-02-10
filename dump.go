@@ -15,14 +15,14 @@ func Dump(context *cli.Context) {
 	etcdURI := context.GlobalString("etcd-uri")
 
 	etcdClient, err := etcd.Dial(etcdURI)
-	PanicIfError("etcd.Dial", err)
+	FatalIfError("etcd.Dial", err)
 
 	keyValues, err := etcdClient.KeyValuePairs(namespace)
-	PanicIfError("etcdClient.KeyValuePairs", err)
+	FatalIfError("etcdClient.KeyValuePairs", err)
 
 	localEtcdFS := fs.New(localPath)
 	err = localEtcdFS.SetAll(keyValues)
-	PanicIfError("localEtcdFS.SetAll", err)
+	FatalIfError("localEtcdFS.SetAll", err)
 
 	os.Exit(0)
 }

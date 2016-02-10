@@ -15,7 +15,7 @@ func PrintFS(context *cli.Context) {
 	localEtcdFS := fs.New(localPath)
 
 	keyValues, err := localEtcdFS.KeyValuePairs(namespace)
-	PanicIfError("localEtcdFS.KeyValuePairs", err)
+	FatalIfError("localEtcdFS.KeyValuePairs", err)
 
 	printKeyValuePairs(useTable, keyValues)
 }

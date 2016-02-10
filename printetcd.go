@@ -12,10 +12,10 @@ func PrintEtcd(context *cli.Context) {
 	useTable := context.Bool("table")
 
 	etcdClient, err := etcd.Dial(etcdURI)
-	PanicIfError("etcd.Dial", err)
+	FatalIfError("etcd.Dial", err)
 
 	keyValues, err := etcdClient.KeyValuePairs(namespace)
-	PanicIfError("etcdClient.KeyValuePairs", err)
+	FatalIfError("etcdClient.KeyValuePairs", err)
 
 	printKeyValuePairs(useTable, keyValues)
 }

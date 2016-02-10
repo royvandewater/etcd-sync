@@ -47,6 +47,7 @@ func main() {
 			Name:    "printfs",
 			Aliases: []string{"pf"},
 			Usage:   "print etcd key/values from local fs",
+			Action:  PrintFS,
 			Flags: []cli.Flag{
 				cli.BoolFlag{
 					Name:   "table, t",

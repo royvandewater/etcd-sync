@@ -15,13 +15,13 @@ func ExitWithHelp(msg string) {
 	os.Exit(1)
 }
 
-// PanicIfError prints error and dies if error is non nil
-func PanicIfError(msg string, err error) {
+// FatalIfError prints error and dies if error is non nil
+func FatalIfError(msg string, err error) {
 	if err == nil {
 		return
 	}
 
-	log.Panicf("ERROR(%v):\n\n%v", msg, err)
+	log.Fatalf("ERROR(%v):\n\n%v", msg, err)
 }
 
 func printKeyValuePairs(useTable bool, keyValues []keyvalue.KeyValue) {

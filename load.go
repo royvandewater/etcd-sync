@@ -16,12 +16,12 @@ func Load(context *cli.Context) {
 
 	localEtcdFS := fs.New(localPath)
 	keyValues, err := localEtcdFS.KeyValuePairs(namespace)
-	PanicIfError("localEtcdFS.KeyValuePairs", err)
+	FatalIfError("localEtcdFS.KeyValuePairs", err)
 
 	etcdClient, err := etcd.Dial(etcdURI)
-	PanicIfError("etcd.Dial", err)
+	FatalIfError("etcd.Dial", err)
 	err = etcdClient.SetAll(keyValues)
-	PanicIfError("etcdClient.SetAll", err)
+	FatalIfError("etcdClient.SetAll", err)
 
 	os.Exit(0)
 }
