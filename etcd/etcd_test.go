@@ -48,7 +48,7 @@ var _ = Describe("Etcd", func() {
 				})
 
 				It("should call set with the key and value", func() {
-					Expect(fakeClient.SetCalled).To(BeTrue())
+					Expect(fakeClient.SetCalledTimes).To(Equal(1))
 					Expect(fakeClient.SetCalledWith).To(Equal([]string{"this", "that"}))
 				})
 
@@ -64,7 +64,7 @@ var _ = Describe("Etcd", func() {
 				})
 
 				It("should call set with the key and value", func() {
-					Expect(fakeClient.SetCalled).To(BeTrue())
+					Expect(fakeClient.SetCalledTimes).To(Equal(1))
 					Expect(fakeClient.SetCalledWith).To(Equal([]string{"key", "value"}))
 				})
 
@@ -73,13 +73,32 @@ var _ = Describe("Etcd", func() {
 				})
 			})
 		})
+
+		Describe("SetAll", func() {
+			Describe("When called with two keyValues", func() {
+				BeforeEach(func() {
+					keyValues := make([]keyvalue.KeyValue, 2)
+					keyValues[0] = keyvalue.KeyValue{Key: "this", Value: "that"}
+					keyValues[1] = keyvalue.KeyValue{Key: "key", Value: "value"}
+					err = sut.SetAll(keyValues)
+				})
+
+				It("should call set twice", func() {
+					Expect(fakeClient.SetCalledTimes).To(Equal(2))
+				})
+
+				It("should return nil", func() {
+					Expect(err).To(BeNil())
+				})
+			})
+		})
 	})
 })
 
 type FakeClient struct {
-	SetCalled     bool
-	SetCalledWith []string
-	SetReturns    error
+	SetCalledTimes int
+	SetCalledWith  []string
+	SetReturns     error
 }
 
 func (client *FakeClient) Del(key string) error                     { return nil }
@@ -89,7 +108,7 @@ func (client *FakeClient) Ls(key string) ([]string, error)          { return []s
 func (client *FakeClient) LsRecursive(key string) ([]string, error) { return []string{}, nil }
 func (client *FakeClient) Set(key, value string) error {
 	client.SetCalledWith = []string{key, value}
-	client.SetCalled = true
+	client.SetCalledTimes++
 	return client.SetReturns
 }
 

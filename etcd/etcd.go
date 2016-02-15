@@ -50,6 +50,13 @@ func (etcd *Etcd) KeyValuePairs(namespace string) ([]keyvalue.KeyValue, error) {
 	return keyValues, nil
 }
 
+// Set sets the keyValue on the remote Etcd
+func (etcd *Etcd) Set(keyValue keyvalue.KeyValue) error {
+	debug("Set: %v", keyValue)
+	err := etcd.client.Set(keyValue.Key, keyValue.Value)
+	return err
+}
+
 // SetAll sets all keyValues on the remote Etcd
 func (etcd *Etcd) SetAll(keyValues []keyvalue.KeyValue) error {
 	for _, keyValue := range keyValues {
@@ -59,11 +66,4 @@ func (etcd *Etcd) SetAll(keyValues []keyvalue.KeyValue) error {
 		}
 	}
 	return nil
-}
-
-// Set sets the keyValue on the remote Etcd
-func (etcd *Etcd) Set(keyValue keyvalue.KeyValue) error {
-	debug("Set: %v", keyValue)
-	err := etcd.client.Set(keyValue.Key, keyValue.Value)
-	return err
 }
