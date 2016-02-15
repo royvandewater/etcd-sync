@@ -13,9 +13,16 @@ type Etcd struct {
 	client etcdclient.EtcdClient
 }
 
-// Dial creates a Etcd from the remote etcd server.
-func Dial(etcdURI string) (*Etcd, error) {
-	client, err := etcdclient.Dial(etcdURI)
+// ClientDial dials up an etcd client
+type ClientDial func(url string) (etcdclient.EtcdClient, error)
+
+// Dial creates a Etcd from the remote etcd server. Leave clientDial
+// nil to use the default etcd client
+func Dial(etcdURI string, clientDial ClientDial) (*Etcd, error) {
+	if clientDial == nil {
+		clientDial = etcdclient.Dial
+	}
+	client, err := clientDial(etcdURI)
 	return &Etcd{client}, err
 }
 

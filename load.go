@@ -18,7 +18,7 @@ func Load(context *cli.Context) {
 	keyValues, err := localEtcdFS.KeyValuePairs(namespace)
 	FatalIfError("localEtcdFS.KeyValuePairs", err)
 
-	etcdClient, err := etcd.Dial(etcdURI)
+	etcdClient, err := etcd.Dial(etcdURI, nil)
 	FatalIfError("etcd.Dial", err)
 	err = etcdClient.SetAll(keyValues)
 	FatalIfError("etcdClient.SetAll", err)

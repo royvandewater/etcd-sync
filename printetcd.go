@@ -11,7 +11,7 @@ func PrintEtcd(context *cli.Context) {
 	etcdURI := context.GlobalString("etcd-uri")
 	useTable := context.Bool("table")
 
-	etcdClient, err := etcd.Dial(etcdURI)
+	etcdClient, err := etcd.Dial(etcdURI, nil)
 	FatalIfError("etcd.Dial", err)
 
 	keyValues, err := etcdClient.KeyValuePairs(namespace)

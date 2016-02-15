@@ -14,7 +14,7 @@ func Dump(context *cli.Context) {
 	localPath := context.GlobalString("local-path")
 	etcdURI := context.GlobalString("etcd-uri")
 
-	etcdClient, err := etcd.Dial(etcdURI)
+	etcdClient, err := etcd.Dial(etcdURI, nil)
 	FatalIfError("etcd.Dial", err)
 
 	keyValues, err := etcdClient.KeyValuePairs(namespace)
