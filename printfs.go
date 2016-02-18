@@ -12,9 +12,10 @@ func PrintFS(context *cli.Context) {
 	namespace := context.GlobalString("namespace")
 	localPath := context.GlobalString("local-path")
 	useTable := context.Bool("table")
+	includeDirs := context.Bool("include-directories")
 	localEtcdFS := fs.New(localPath)
 
-	keyValues, err := localEtcdFS.KeyValuePairs(namespace)
+	keyValues, err := localEtcdFS.KeyValuePairs(namespace, includeDirs)
 	FatalIfError("localEtcdFS.KeyValuePairs", err)
 
 	printKeyValuePairs(useTable, keyValues)

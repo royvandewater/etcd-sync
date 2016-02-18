@@ -13,9 +13,10 @@ func Load(context *cli.Context) {
 	namespace := context.GlobalString("namespace")
 	localPath := context.GlobalString("local-path")
 	etcdURI := context.GlobalString("etcd-uri")
+	includeDirs := context.Bool("include-directories")
 
 	localEtcdFS := fs.New(localPath)
-	keyValues, err := localEtcdFS.KeyValuePairs(namespace)
+	keyValues, err := localEtcdFS.KeyValuePairs(namespace, includeDirs)
 	FatalIfError("localEtcdFS.KeyValuePairs", err)
 
 	etcdClient, err := etcd.Dial(etcdURI, nil)

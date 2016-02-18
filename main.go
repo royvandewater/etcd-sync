@@ -42,6 +42,13 @@ func main() {
 			Aliases: []string{"l"},
 			Usage:   "load local fs etcd pairs into remote etcd",
 			Action:  Load,
+			Flags: []cli.Flag{
+				cli.BoolFlag{
+					Name:   "include-directories, i",
+					Usage:  "Make etcd directories for empty directories in the fs",
+					EnvVar: "ETCDSYNC_INCLUDE_DIRECTORIES",
+				},
+			},
 		},
 		{
 			Name:    "printfs",
@@ -53,6 +60,11 @@ func main() {
 					Name:   "table, t",
 					Usage:  "Show using a pretty ascii table",
 					EnvVar: "ETCDSYNC_TABLE",
+				},
+				cli.BoolFlag{
+					Name:   "include-directories, i",
+					Usage:  "Include directories in the local fs",
+					EnvVar: "ETCDSYNC_INCLUDE_DIRECTORIES",
 				},
 			},
 		},

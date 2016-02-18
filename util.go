@@ -44,6 +44,11 @@ func printTable(keyValues []keyvalue.KeyValue) {
 	table.SetHeader([]string{"Key", "Value"})
 
 	for _, keyValue := range keyValues {
+		if keyValue.IsDir {
+			table.Append([]string{keyValue.Key, "<dir>"})
+			continue
+		}
+
 		table.Append([]string{keyValue.Key, keyValue.Value})
 	}
 	table.Render()

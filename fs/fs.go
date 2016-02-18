@@ -25,8 +25,9 @@ func New(path string) *FS {
 }
 
 // KeyValuePairs returns a list key value pairs
-// recursively under the namespace
-func (fs *FS) KeyValuePairs(namespace string) ([]keyvalue.KeyValue, error) {
+// recursively under the namespace. If includeDirs
+// is true, then the results will include the directories
+func (fs *FS) KeyValuePairs(namespace string, includeDirs bool) ([]keyvalue.KeyValue, error) {
 	var keyValuePairs []keyvalue.KeyValue
 
 	dir := path.Join(fs.path, namespace)
@@ -35,7 +36,17 @@ func (fs *FS) KeyValuePairs(namespace string) ([]keyvalue.KeyValue, error) {
 			return err
 		}
 
+		key, err := filepath.Rel(fs.path, keyValuePath)
+		if err != nil {
+			return err
+		}
+
 		if info.IsDir() {
+			if !includeDirs {
+				return nil
+			}
+
+			keyValuePairs = append(keyValuePairs, keyvalue.KeyValue{Key: key, Value: "", IsDir: true})
 			return nil
 		}
 
@@ -44,10 +55,6 @@ func (fs *FS) KeyValuePairs(namespace string) ([]keyvalue.KeyValue, error) {
 			return err
 		}
 
-		key, err := filepath.Rel(fs.path, keyValuePath)
-		if err != nil {
-			return err
-		}
 		value := strings.TrimSpace(string(contents))
 		keyValuePairs = append(keyValuePairs, keyvalue.KeyValue{Key: key, Value: value})
 

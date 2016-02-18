@@ -52,9 +52,15 @@ func (etcd *Etcd) KeyValuePairs(namespace string) ([]keyvalue.KeyValue, error) {
 
 // Set sets the keyValue on the remote Etcd
 func (etcd *Etcd) Set(keyValue keyvalue.KeyValue) error {
+	if keyValue.IsDir {
+		debug("MkDir: %v", keyValue.Key)
+		err := etcd.client.MkDir(keyValue.Key)
+
+		return err
+	}
+
 	debug("Set: %v", keyValue)
-	err := etcd.client.Set(keyValue.Key, keyValue.Value)
-	return err
+	return etcd.client.Set(keyValue.Key, keyValue.Value)
 }
 
 // SetAll sets all keyValues on the remote Etcd
