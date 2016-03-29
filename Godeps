@@ -1,5 +1,5 @@
 github.com/codegangsta/cli
-github.com/coreos/etcd/client
+github.com/coreos/etcd/client a243f80c80e0b89d9daf9ccfb827f9a2ab667120
 github.com/octoblu/go-simple-etcd-client/etcdclient v2.6.1
 github.com/olekukonko/tablewriter cca8bbc0798408af109aaaa239cbd2634846b340
 github.com/onsi/ginkgo/ginkgo
