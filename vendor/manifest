@@ -1,0 +1,94 @@
+{
+	"version": 0,
+	"dependencies": [
+		{
+			"importpath": "github.com/codegangsta/cli",
+			"repository": "https://github.com/codegangsta/cli",
+			"revision": "bc465becccd1d527002fda095fc3c19d9c115029",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/coreos/etcd/client",
+			"repository": "https://github.com/coreos/etcd",
+			"revision": "a5172974daf14250e4b613d8747acc86fd2ecdb4",
+			"branch": "master",
+			"path": "/client",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/coreos/etcd/pkg/pathutil",
+			"repository": "https://github.com/coreos/etcd",
+			"revision": "a5172974daf14250e4b613d8747acc86fd2ecdb4",
+			"branch": "master",
+			"path": "/pkg/pathutil",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/coreos/etcd/pkg/types",
+			"repository": "https://github.com/coreos/etcd",
+			"revision": "a5172974daf14250e4b613d8747acc86fd2ecdb4",
+			"branch": "master",
+			"path": "/pkg/types",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/mattn/go-runewidth",
+			"repository": "https://github.com/mattn/go-runewidth",
+			"revision": "d6bea18f789704b5f83375793155289da36a3c7f",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/octoblu/go-simple-etcd-client",
+			"repository": "https://github.com/octoblu/go-simple-etcd-client",
+			"revision": "83ea6cb2f60988064a9c0695170c3b3ddbdabaad",
+			"branch": "HEAD",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/olekukonko/tablewriter",
+			"repository": "https://github.com/olekukonko/tablewriter",
+			"revision": "cca8bbc0798408af109aaaa239cbd2634846b340",
+			"branch": "HEAD",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/tj/go-debug",
+			"repository": "https://github.com/tj/go-debug",
+			"revision": "ff4a55a20a86994118644bbddc6a216da193cc13",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/ugorji/go/codec",
+			"repository": "https://github.com/ugorji/go",
+			"revision": "a396ed22fc049df733440d90efe17475e3929ccb",
+			"branch": "master",
+			"path": "/codec",
+			"notests": true
+		},
+		{
+			"importpath": "github.com/visionmedia/go-debug",
+			"repository": "https://github.com/visionmedia/go-debug",
+			"revision": "ff4a55a20a86994118644bbddc6a216da193cc13",
+			"branch": "master",
+			"notests": true
+		},
+		{
+			"importpath": "golang.org/x/net/context",
+			"repository": "https://go.googlesource.com/net",
+			"revision": "31df19d69da8728e9220def59b80ee577c3e48bf",
+			"branch": "master",
+			"path": "/context",
+			"notests": true
+		},
+		{
+			"importpath": "gopkg.in/yaml.v2",
+			"repository": "https://gopkg.in/yaml.v2",
+			"revision": "a83829b6f1293c91addabc89d0571c246397bbf4",
+			"branch": "v2",
+			"notests": true
+		}
+	]
+}

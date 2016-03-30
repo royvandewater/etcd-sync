@@ -1,11 +1,19 @@
 #!/bin/bash
 
-APP_NAME=gogoslow4me
-TMP_DIR=/tmp/$APP_NAME/
+APP_NAME=etcdsync
+TMP_DIR=$PWD/tmp
 IMAGE_NAME=local/$APP_NAME
 
-build() {
-  docker build --tag $IMAGE_NAME .
+build_on_docker() {
+  docker build --tag $IMAGE_NAME:built .
+}
+
+build_on_local() {
+  env GOOS=linux go build -a -tags netgo -installsuffix cgo -ldflags '-w' -o "${TMP_DIR}/${APP_NAME}" .
+}
+
+build_osx_on_local() {
+  env GOOS=darwin go build -a -tags netgo -installsuffix cgo -ldflags '-w' -o "${APP_NAME}" .
 }
 
 copy() {
@@ -19,13 +27,13 @@ init() {
 }
 
 package() {
-  docker build --tag $IMAGE_NAME:entrypoint entrypoint
+  docker build --tag $IMAGE_NAME:latest entrypoint
 }
 
 run() {
   docker run --rm \
     --volume $TMP_DIR:/export/ \
-    $IMAGE_NAME \
+    $IMAGE_NAME:built \
       cp $APP_NAME /export
 }
 
@@ -35,11 +43,48 @@ panic() {
   exit 1
 }
 
-main() {
+docker_build() {
   init    || panic "init failed"
-  build   || panic "build failed"
+  build_on_docker || panic "build_on_docker failed"
   run     || panic "run failed"
   copy    || panic "copy failed"
   package || panic "package failed"
 }
-main
+
+local_build() {
+  init    || panic "init failed"
+  build_on_local || panic "build_on_local failed"
+  copy    || panic "copy failed"
+  package || panic "package failed"
+}
+
+osx_build() {
+  init    || panic "init failed"
+  build_osx_on_local || panic "build_osx_on_local failed"
+}
+
+main() {
+  local mode="$1"
+  if [ "$mode" == "local" ]; then
+    echo "Local Build"
+    local_build
+    exit $?
+  fi
+
+  if [ "$mode" == "docker" ]; then
+    echo "Docker Build"
+    docker_build
+    exit $?
+  fi
+
+  if [ "$mode" == "osx" ]; then
+    echo "OSX Build"
+    osx_build
+    exit $?
+  fi
+
+
+  echo "Usage: ./build.sh local/remote/osx"
+  exit 1
+}
+main $@
