@@ -63,6 +63,14 @@ osx_build() {
   build_osx_on_local || panic "build_osx_on_local failed"
 }
 
+release_build() {
+  mkdir -p dist \
+  && osx_build \
+  && tar -czf "${APP_NAME}-osx.tar.gz" "${APP_NAME}" \
+  && mv "${APP_NAME}-osx.tar.gz" dist/
+  echo "Wrote dist/${APP_NAME}-osx.tar.gz"
+}
+
 main() {
   local mode="$1"
   if [ "$mode" == "local" ]; then
@@ -83,8 +91,13 @@ main() {
     exit $?
   fi
 
+  if [ "$mode" == "release" ]; then
+    echo "Release Build"
+    release_build
+    exit $?
+  fi
 
-  echo "Usage: ./build.sh local/remote/osx"
+  echo "Usage: ./build.sh local/docker/osx/release"
   exit 1
 }
 main $@
